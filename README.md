@@ -1,3 +1,3 @@
-#CrysLLMGen - LLM Meets Diffusion: A Hybrid Framework for Crystal Material Generation. (NeurIPS 2025)
+##CrysLLMGen - LLM Meets Diffusion: A Hybrid Framework for Crystal Material Generation. (NeurIPS 2025)
 
 Code will be live soon...
