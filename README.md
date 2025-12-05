@@ -73,7 +73,7 @@ For MP-20
     python -W ignore llm_sample.py --model_name 7b --model_path=exp/7b-mp/checkpoint-27136 --num_samples 10000 --dataset mp --temperature 1.0 --top_p 0.7
 ```
 
-* Generated samples will be saved as `.pt` files such as `llm_sample_mp_10000.pt` or `llm_sample_perov_10000.pt`
+* Generated samples will be saved as `.pt` files, such as `llm_sample_mp_10000.pt` or `llm_sample_perov_10000.pt`
 * You can try out different --temperature and --top_p values, for different quality of generation.
 
 #### Step-2: Refinement Using Diffusion Model
@@ -90,7 +90,7 @@ For MP-20
 
   * `<Saved Model Path>`: directory where the diffusion model is stored → `out/<Dataset>/<expt_date>/<expt_time>/`
   * `diff_steps`: We use `700` for Perov and `800` for MP. 
-  * Generated samples will be saved as `.pt` files in gen/<Dataset> directory such as `gen/perov_5/eval_gen.pt` or `gen/mp_20/eval_gen.pt`
+  * Generated samples will be saved as `.pt` files in gen/<Dataset> directory, such as `gen/perov_5/eval_gen.pt` or `gen/mp_20/eval_gen.pt`
 
 
 ### Evaluate CrysLLMGen for Unconditional Generation
@@ -109,7 +109,7 @@ For any further query, feel free to contact [Kishalay Das](kishalaydas@kgpian.ii
 
 ## How to cite
 
-If you are using TGDMat or our Textuak Dataset, please cite our work as follow :
+If you are using CrysLLMGen or our Textual Dataset, please cite our work as follows:
 
 ```
 @article{khastagir2025llm,
