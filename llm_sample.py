@@ -204,8 +204,8 @@ if __name__ == "__main__":
                                   species=atom_types,
                                   coords=frac_coords,
                                   coords_are_cartesian=False)
-            writer = CifWriter(structure)
-            writer.write_file("cif_files/"+str(sample_count)+".cif")
+            # writer = CifWriter(structure)
+            # writer.write_file("cif_files/"+str(sample_count)+".cif")
             pbar.update(1)
 
     print("Sampled Data size:", len(n_atom))
