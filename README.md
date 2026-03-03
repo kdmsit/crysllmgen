@@ -59,38 +59,58 @@ For MP-20
 
 * The trained model will be saved at: `out/<Dataset>/<expt_date>/<expt_time>/`, where <Dataset> is 'perov_5' or 'mp_20'
 
-### Unconditional Sampling from CrysLLMGen
+### 🎲 Unconditional Sampling (Batch-wise) from CrysLLMGen
 
-#### Step-1: Generate Initial Samples from LLaMa-2 Model
+Use the appropriate `--model_path` and `--diff_steps` depending on the dataset.
 
-For Perov-5
 ```bash
-    python -W ignore llm_sample.py --model_name 7b --model_path=exp/7b-perov/checkpoint-11356 --num_samples 10000 --dataset perov --temperature 1.0 --top_p 0.7
+python -W ignore crysllmgen_sample.py \
+--model_name 7b \
+--model_path <LLM_CHECKPOINT_PATH> \
+--chkpt_name <DIFFUSION_CHECKPOINT_PATH> \
+--num_samples 10000 \
+--dataset <mp | perov> \
+--temperature 1.0 \
+--top_p 0.7 \
+--diff_steps <700 | 800> \
+--run-type sample \
+--out-prefix "Crysllmgen-7b_sample" \
+--batch_size 128
 ```
 
-For MP-20
-```bash
-    python -W ignore llm_sample.py --model_name 7b --model_path=exp/7b-mp/checkpoint-27136 --num_samples 10000 --dataset mp --temperature 1.0 --top_p 0.7
-```
+### 🔁 Replace Accordingly
 
-* Generated samples will be saved as `.pt` files, such as `llm_sample_mp_10000.pt` or `llm_sample_perov_10000.pt`
-* You can try out different --temperature and --top_p values, for different quality of generation.
+* **For MP-20**
 
-#### Step-2: Refinement Using Diffusion Model
+  * `--model_path exp/7b-mp/checkpoint-27136`
+  * `--dataset mp`
+  * `--diff_steps 800`
 
-For Perov-5
-```bash
-    python -W ignore diff_refinement.py --model_path 'gen/' --chkpt_name <Saved Model Path> --llm_file_name llm_sample_perov_10000.pt  --tasks gen --dataset perov_5 --batch_size 1024 --timesteps 1000 --diff_steps 800  --run-type 'sample'
-```
+* **For Perov-5**
 
-For MP-20
-```bash
-    python -W ignore diff_refinement.py --model_path 'gen/' --chkpt_name <Saved Model Path> --llm_file_name llm_sample_mp_10000.pt  --tasks gen --dataset mp_20 --batch_size 1024 --timesteps 1000 --diff_steps 700  --run-type 'sample'
-```
+  * `--model_path exp/7b-perov/checkpoint-11356`
+  * `--dataset perov`
+  * `--diff_steps 700`
 
-  * `<Saved Model Path>`: directory where the diffusion model is stored → `out/<Dataset>/<expt_date>/<expt_time>/`
-  * `diff_steps`: We use `700` for Perov and `800` for MP. 
-  * Generated samples will be saved as `.pt` files in gen/<Dataset> directory, such as `gen/perov_5/eval_gen.pt` or `gen/mp_20/eval_gen.pt`
+---
+
+### 📁 Output
+
+* Saved as `.pt` files:
+
+  * `Crysllmgen_sample_mp_10000.pt`
+  * `Crysllmgen_sample_perov_10000.pt`
+
+### ⚙️ Notes
+
+* `<DIFFUSION_CHECKPOINT_PATH>` → Diffusion checkpoint directory:
+
+  ```
+  out/<Dataset>/<expt_date>/<expt_time>/
+  ```
+* You can tune `--temperature` and `--top_p` to control diversity and generation quality.
+
+
 
 
 ### Evaluate CrysLLMGen for Unconditional Generation

@@ -240,6 +240,7 @@ class GenEval(object):
             self.crys, self.gt_crys,
             struc_cutoff=round(cutoff_dict['struc'],2),
             comp_cutoff=round(cutoff_dict['comp'],2))
+        cov_metrics_dict = {k: round(v * 100, 4) for k, v in cov_metrics_dict.items()}
         return cov_metrics_dict
 
     def get_metrics(self):
