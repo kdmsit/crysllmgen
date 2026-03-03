@@ -26,42 +26,78 @@ pip install -r requirements.txt
 However, there may be some ad-hoc dependencies that were not captured. 
 If you encounter any missing packages, feel free to install them manually using `pip install`.
 
-## Usage
+## Usage Guide
 
-### Train CrysLLMGen
+### Training Pipeline
 
-#### Step-1: Fine-tune LLaMa-2 Model
+#### Step 1: Fine-tune LLaMA-2 Model
 
-For Perov-5
+**For Perov-5**
+
 ```bash
-    python -W ignore llm_finetune.py --run-name 7b-perov --model 7b --num-epochs 1 --data-path data/perov_5
+python -W ignore llm_finetune.py \
+--run-name 7b-perov \
+--model 7b \
+--num-epochs 1 \
+--data-path data/perov_5
 ```
 
-For MP-20
+**For MP-20**
+
 ```bash
-    python -W ignore llm_finetune.py --run-name 7b-mp --model 7b --num-epochs 1 --data-path data/mp_20
+python -W ignore llm_finetune.py \
+--run-name 7b-mp \
+--model 7b \
+--num-epochs 1 \
+--data-path data/mp_20
 ```
 
-* The fine-tuned model will be saved at: `exp/7b-perov/` or `exp/7b-mp/`
+**Output:**
+The fine-tuned LLM will be saved in:
 
-#### Step-2: Train Diffusion Model
+* `exp/7b-perov/` (Perov-5)
+* `exp/7b-mp/` (MP-20)
 
-For Perov-5
+---
+
+#### Step 2: Train the Diffusion Model
+
+**For Perov-5**
+
 ```bash
-    python -W ignore diff_train.py --dataset perov_5 --batch_size 512 --epochs 500 --timesteps 1000 --run-type 'train'
+python -W ignore diff_train.py \
+--dataset perov_5 \
+--batch_size 512 \
+--epochs 500 \
+--timesteps 1000 \
+--run-type train
 ```
 
-For MP-20
+**For MP-20**
+
 ```bash
-    python -W ignore diff_train.py --dataset mp_20 --batch_size 512 --epochs 500 --timesteps 1000 --run-type 'train'
+python -W ignore diff_train.py \
+--dataset mp_20 \
+--batch_size 512 \
+--epochs 500 \
+--timesteps 1000 \
+--run-type train
 ```
 
+**Output:**
+The trained diffusion model will be saved at:
 
-* The trained model will be saved at: `out/<Dataset>/<expt_date>/<expt_time>/`, where <Dataset> is 'perov_5' or 'mp_20'
+```
+out/<Dataset>/<expt_date>/<expt_time>/
+```
 
-### 🎲 Unconditional Sampling (Batch-wise) from CrysLLMGen
+Where `<Dataset>` is either `perov_5` or `mp_20`.
 
-Use the appropriate `--model_path` and `--diff_steps` depending on the dataset.
+---
+
+## Unconditional Sampling (Batch-wise) from CrysLLMGen
+
+Use the correct `--model_path` and `--diff_steps` depending on the dataset.
 
 ```bash
 python -W ignore crysllmgen_sample.py \
@@ -78,58 +114,84 @@ python -W ignore crysllmgen_sample.py \
 --batch_size 128
 ```
 
-### 🔁 Replace Accordingly
+### Replace the Following Based on Dataset
 
-* **For MP-20**
+#### For MP-20
 
-  * `--model_path exp/7b-mp/checkpoint-27136`
-  * `--dataset mp`
-  * `--diff_steps 800`
+* `--model_path exp/7b-mp/checkpoint-27136`
+* `--dataset mp`
+* `--diff_steps 800`
 
-* **For Perov-5**
+#### For Perov-5
 
-  * `--model_path exp/7b-perov/checkpoint-11356`
-  * `--dataset perov`
-  * `--diff_steps 700`
+* `--model_path exp/7b-perov/checkpoint-11356`
+* `--dataset perov`
+* `--diff_steps 700`
 
 ---
 
-### 📁 Output
+### Output Files
 
-* Saved as `.pt` files:
+Generated samples are saved as `.pt` files:
 
-  * `Crysllmgen_sample_mp_10000.pt`
-  * `Crysllmgen_sample_perov_10000.pt`
+* `Crysllmgen_sample_mp_10000.pt`
+* `Crysllmgen_sample_perov_10000.pt`
 
-### ⚙️ Notes
+---
 
-* `<DIFFUSION_CHECKPOINT_PATH>` → Diffusion checkpoint directory:
+### Important Notes
+
+* `<DIFFUSION_CHECKPOINT_PATH>` should point to:
 
   ```
   out/<Dataset>/<expt_date>/<expt_time>/
   ```
-* You can tune `--temperature` and `--top_p` to control diversity and generation quality.
+* You can adjust `--temperature` and `--top_p` to balance diversity and generation quality.
 
+---
 
+## Evaluation for Unconditional Generation
 
+After sampling, evaluate the generated structures using:
 
-### Evaluate CrysLLMGen for Unconditional Generation
+**For Perov-5**
 
-For Perov-5
 ```bash
-    python -W ignore compute_metrics.py --root_path gen/perov_5/eval_gen.pt --tasks gen --eval_model_name perovskite --gt_file data/perov_5/test.csv
+python -W ignore compute_metrics.py \
+--root_path <PT_FILE_PATH> \
+--tasks gen \
+--eval_model_name perovskite \
+--gt_file data/perov_5/test.csv
 ```
 
-For MP-20
+**For MP-20**
+
 ```bash
-    python -W ignore compute_metrics.py --root_path gen/mp_20/eval_gen.pt --tasks gen --eval_model_name mp20 --gt_file data/mp_20/test.csv
+python -W ignore compute_metrics.py \
+--root_path <PT_FILE_PATH> \
+--tasks gen \
+--eval_model_name mp20 \
+--gt_file data/mp_20/test.csv
 ```
 
-For any further query, feel free to contact [Kishalay Das](kishalaydas@kgpian.iitkgp.ac.in)
+`<PT_FILE_PATH>` should be the directory containing:
 
-## How to cite
+* `Crysllmgen_sample_mp_10000.pt`
+* `Crysllmgen_sample_perov_10000.pt`
 
-If you are using CrysLLMGen or our Textual Dataset, please cite our work as follows:
+---
+
+## Contact
+
+For any questions, please contact:
+Kishalay Das
+[kishalaydas@kgpian.iitkgp.ac.in](mailto:kishalaydas@kgpian.iitkgp.ac.in)
+
+---
+
+## How to Cite
+
+If you use CrysLLMGen or our textual dataset, please cite:
 
 ```
 @article{khastagir2025llm,
@@ -139,3 +201,4 @@ If you are using CrysLLMGen or our Textual Dataset, please cite our work as foll
   year={2025}
 }
 ```
+
