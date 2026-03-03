@@ -404,7 +404,7 @@ def setup_trainer(args,dataset):
     return trainer
 
 def main(args):
-    dataset = str(args.data_path).split("/")[2]
+    dataset = str(args.data_path).split("/")[1]
     print(dataset)
     trainer = setup_trainer(args,dataset)
 
