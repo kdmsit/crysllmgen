@@ -105,12 +105,12 @@ python -W ignore crysllmgen_sample.py \
 --model_path <LLM_CHECKPOINT_PATH> \
 --chkpt_name <DIFFUSION_CHECKPOINT_PATH> \
 --num_samples 10000 \
---dataset <mp | perov> \
+--dataset < mp | perov> \
 --temperature 1.0 \
 --top_p 0.7 \
 --diff_steps <700 | 800> \
 --run-type sample \
---out-prefix "Crysllmgen-7b_sample" \
+--out-prefix "Crysllmgen_sample" \
 --batch_size 128
 ```
 
